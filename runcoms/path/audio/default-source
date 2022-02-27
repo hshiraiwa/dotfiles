@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+pactl info | grep "Default Source: " | sed -n -e 's/^.*Default Source: //p'

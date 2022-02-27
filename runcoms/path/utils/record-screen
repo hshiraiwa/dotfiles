@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+filename="$HOME/Pictures/$(date +%s%N).mp4"
+
+toggle-handler $0 $$
+
+if [ $? -eq 0 ]; then
+  notify-send "[ScreenRecord] Starting"
+
+  ffmpeg -framerate 30 -f x11grab -i :0.0+${wp[X]},${wp[W]} $filename
+else
+  notify-send "[ScreenRecord] Finished"
+fi

@@ -1,0 +1,44 @@
+- defaults:
+    clean:
+      force: true
+    link:
+      relink: true
+      force: true
+      create: true
+- create:
+    - ~/Documents/Repos
+    - ~/Documents/Personal
+- link:
+    ~/.icons/dotfiles: runcoms/icons
+    ~/.config/alacritty: configs/alacritty
+    ~/.config/rofi: configs/rofi
+    ~/.config/redshift.conf: configs/redshift.conf
+    ~/.config/i3: configs/i3
+    ~/.config/i3status: configs/i3status
+    ~/.nvm: configs/nvm
+    ~/.tmux.conf: configs/.tmux.conf
+    ~/.zprezto: configs/prezto
+    ~/.zlogin: runcoms/zlogin
+    ~/.zlogout: runcoms/zlogout
+    ~/.zpreztorc: runcoms/zpreztorc
+    ~/.zprofile: runcoms/zprofile
+    ~/.zshenv: runcoms/zshenv
+    ~/.zshrc: runcoms/zshrc
+    ~/.fns: runcoms/fns
+    ~/.path: runcoms/path
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
+    - [
+        git config --global core.editor nvim,
+        Setting NeoVim as default git editor,
+      ]
+    - [git config --global alias.co checkout, Setting CO Github allias]
+    - [
+        git config --global user.name "Henrique Yoshio Shiraiwa",
+        Setting Github Name,
+      ]
+    - [
+        git config --global user.email "henrique.shiraiwa@gmail.com",
+        Setting Github Email,
+      ]
+    - [~/.dotfiles/configs/vscode/sync-settings.zsh, Sync vscode settings]

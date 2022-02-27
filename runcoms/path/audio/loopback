@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+source=$(default-source)
+sink=$(default-sink)
+
+toggle-handler $0 $$
+
+if [ $? -eq 0 ]; then
+    notify-send "Loopback: Starting" "source:$source\nsink: $sink"
+    pacat -r --latency-msec=1 --process-time-msec=1 -d $source | pacat -p --latency-msec=1 --process-time-msec=1 -d $sink
+else
+    notify-send "Loopback: Stopped"
+fi

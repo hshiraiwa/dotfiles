@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+main_term_open=$(xdotool search --name "main-term" | wc -l)
+
+if [[ $main_term_open == 0 ]]; then
+	notify-send "initiating main-term"
+	alacritty -t 'main-term' -e tmux new-session -A -s main
+fi
+
+i3 '[title="^main-term$"] scratchpad show, move position center'

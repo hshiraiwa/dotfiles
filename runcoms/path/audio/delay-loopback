@@ -1,0 +1,36 @@
+#!/bin/zsh
+source=$(default-source)
+sink=$(default-sink)
+
+toggle-handler $0 $$
+
+if [ $? -eq 0 ]; then
+  time_input=$(zenity --entry --text "Time between repetitions (ms) [default: 100]")
+  repeats_input=$(zenity --entry --text "Number of repetitions [default: 5]")
+  decay_input=$(zenity --entry --text "Decay between repetitions (%) [default: 80]")
+
+  time=${time_input:=100}
+  repeats=${repeats_input:=5}
+  decay=${decay_input:=80}
+
+  notify-send "Delay Loopback: Starting" "source:$source\nsink: $sink"
+
+  volume=65536
+  latency=1
+  for i in $(seq 1 $repeats); do
+    pacat -r --latency-msec $latency --process-time-msec=1 -d $source | pacat -p --volume=$volume --latency-msec 1 --process-time-msec=1 -d $sink &
+    latency=$((latency + time))
+    volume=$(awk "BEGIN {print int($volume*((100-$decay)/100))}")
+  done
+
+  # Cleanup
+  sleep infinity
+  for sig in INT QUIT HUP TERM; do
+    trap "
+    trap - $sig EXIT
+    kill -s $sig "'"$$"' "$sig"
+  done
+  trap cleanup EXIT
+else
+  notify-send "Delay Loopback: Stopped"
+fi

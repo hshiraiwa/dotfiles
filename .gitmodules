@@ -1,0 +1,10 @@
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot
+	ignore = dirty
+[submodule "prezto"]
+	path = configs/prezto
+	url = git@github.com:sorin-ionescu/prezto.git
+[submodule "nvm"]
+	path = configs/nvm
+	url = git@github.com:nvm-sh/nvm.git

@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+sname=$(basename -- "$1")
+spid=$(pidof -x "$sname" -o $2)
+
+if [ -n "$spid" ]; then
+    pkill -P $spid
+    return 1
+fi
+
+return 0

@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+window_name=$(xprop -id $(xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW | cut -f 2) '\t$0' _NET_WM_NAME | cut -f 2 | tr -d '"')
+
+# Hide main term
+if [[ $window_name = 'main-term' ]]; then
+	i3 '[title="^main-term$"] scratchpad show, move position center'
+	exit
+fi
+
+# Hide steam to tray
+winID=$(xdotool getactivewindow)
+winClass=$(xprop -id $winID WM_CLASS)
+if [[ $winClass = *"Steam"* ]]; then
+	xdotool windowunmap $(xdotool getactivewindow);
+	exit
+fi
+
+if [[ $winClass = *"Spotify"* ]]; then
+	xdotool windowunmap $(xdotool getactivewindow);
+	exit
+fi
+
+i3 kill

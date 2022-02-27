@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ids=($(pactl list sinks | grep 'Sink #' | cut -d"#" -f2))
+names=($(pactl list sinks | grep -A2 "Sink #" | grep "Name: " | cut -d":" -f2))
+
+params=""
+for ((i = 0; i < ${#ids[*]}; ++i)); do
+	params+=" $i ${names[$i]}"
+done
+
+selection=$(zenity --list --column i --column name $params --hide-column=1)
+
+pactl set-default-sink ${ids[$selection]}
+notify-send "[AudioSink]: ${names[$selection]}"

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#getsink() {
+#    pacmd list-sinks |
+#        awk '/index:/{i++} /* index:/{print i; exit}'
+#}
+
+#getvolume() {
+#    pacmd list-sinks |
+#        awk '/^\svolume:/{i++} i=='$(getsink)'{print $5; exit}'
+#}
+
+#output=$(getvolume)
+#volume=${output::-1}
+#volume=$((volume + $1))
+#volume=$((volume > 100 ? 100 : volume))
+#pactl set-sink-volume "@DEFAULT_SINK@" "$volume%"
+
+SINK=$(pactl get-default-sink)
+VOLUME=$(pactl list sinks | grep $SINK -a5 | grep '^[[:space:]]Volume:' | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,')
+VOLUME=$((VOLUME + $1))
+VOLUME=$((VOLUME > 100 ? 100 : VOLUME))
+pactl set-sink-volume "@DEFAULT_SINK@" "$VOLUME%"
+
+notify-send "Volume: $VOLUME%"

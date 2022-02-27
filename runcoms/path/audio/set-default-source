@@ -1,0 +1,15 @@
+#!/bin/sh
+ids=($(pactl list sources | grep 'Source #' | cut -d"#" -f2))
+names=($(pactl list sources | grep -A2 "Source #" | grep "Name: " | cut -d":" -f2))
+
+params=""
+for ((i = 0; i < ${#ids[*]}; ++i)); do
+	if test "${names[$i]#*"input"}" != ${names[$i]}; then
+		params+=" $i ${names[$i]}"
+	fi
+done
+
+selection=$(zenity --list --column i --column name $params --hide-column=1)
+
+pactl set-default-source ${ids[$selection]}
+notify-send "[AudioSink]: ${names[$selection]}"

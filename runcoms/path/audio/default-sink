@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+pactl info | grep "Default Sink: " | sed -n -e 's/^.*Default Sink: //p'

@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+filename="$HOME/Pictures/$(date +%s%N).mp4"
+
+toggle-handler $0 $$
+
+if [ $? -eq 0 ]; then
+  declare -A wp
+  while IFS='=' read -r name value; do
+    wp+=([$name]=$value)
+  done < <(xdotool getactivewindow getwindowgeometry --shell)
+  notify-send "[WindowRecord] Starting"
+
+  ffmpeg -video_size ${wp[WIDTH]}x${wp[HEIGHT]} -framerate 30 -f x11grab -i :0.0+${wp[X]},${wp[W]} $filename
+else
+  notify-send "[WindowRecord] Finished"
+fi
