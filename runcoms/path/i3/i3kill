@@ -21,4 +21,9 @@ if [[ $winClass = *"Spotify"* ]]; then
 	exit
 fi
 
+if [[ $winClass = *"Discord"* ]]; then
+	xdotool windowunmap $(xdotool getactivewindow);
+	exit
+fi
+
 i3 kill
