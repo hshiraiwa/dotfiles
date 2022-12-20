@@ -5,6 +5,8 @@ exec "kdocker -q -o -l -i ~/.icons/dotfiles/spotify.png spotify %U"
 exec_always "setxkbmap -option compose:caps"
 exec_always "nitrogen --restore"
 exec_always "compton -b"
+exec --no-startup-id xautolock -time 5 -locker '~/.path/i3/i3autolock | xset dpms force off' -detectsleep -killtime 10 -killer "systemctl suspend"
+
 
 # set modifier
 set $super Mod4
