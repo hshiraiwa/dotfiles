@@ -21,20 +21,12 @@ set $ctrl Control
 # - Make sure that you give the absolute path to the binary / program / executable
 # - You may specify any additional arguments required by the binary / executable
 
-### Wallpaper: ###
-# - You need to specify homescreen wallpaper using azote
-
-set $lockScreenWallpaper /usr/share/wallpapers/garuda-wallpapers/Garuda-Desert.png
-
 ### Applications: ###
 
 set $preferredTerminalEmulator /usr/bin/alacritty
-# set $preferredBrowser "/usr/bin/firefox -p default-release"
 set $preferredBrowser "/usr/bin/firefox"
-set $preferredWorkBrowser "/usr/bin/firefox -p work"
 set $preferredFileManager /usr/bin/thunar
-set $preferredMailClient /usr/bin/geary
-set $preferredTextEditor /usr/bin/geany
+set $preferredTextEditor /usr/bin/code
 set $preferredScreenCaptureTool /usr/bin/flameshot gui
 
 ###########################################
@@ -42,10 +34,8 @@ set $preferredScreenCaptureTool /usr/bin/flameshot gui
 ###########################################
 
 bindsym $super+F1 exec $preferredFileManager;focus
-#bindsym $super+F2 exec $preferredMailClient;focus
-#bindsym $super+F2 exec $preferredWorkBrowser;focus
+bindsym $super+F2 exec $preferredTextEditor;focus
 bindsym $super+F3 exec $preferredBrowser;focus
-bindsym $super+F4 exec $preferredTextEditor;focus
 
 ### Screen Capturing & Print Screen: ###
 
@@ -53,18 +43,10 @@ bindsym $super+F9 exec $preferredScreenCaptureTool
 bindsym Print exec --no-startup-id $preferredScreenCaptureTool
 
 ### Start a Terminal Emulator: ###
-# - You can change the preferredTerminalEmulator variable
-# - alacritty & xfce4-terminal can also be started using their individual keybindings
-
-# bindsym $super+Return exec $preferredTerminalEmulator
-# bindsym $super+t exec xfce4-terminal
-# bindsym $super+Return exec "$preferredTerminalEmulator -t 'main-term' -e tmux new-session -A -s main"
-# exec --no-startup-id "$preferredTerminalEmulator -t 'main-term' -e tmux new-session -A -s main"
-# bindsym $super+$ctrl+Return exec --no-startup-id "$preferredTerminalEmulator -t 'main-term' -e tmux new-session -A -s main"
 bindsym $super+Return exec ~/.path/i3/i3terminal
 for_window [title="^main-term$"] floating enable, resize set 95ppt 95ppt, move scratchpad
-
 bindsym $super+$alt+Return exec "$preferredTerminalEmulator -e tmux new-session"
+
 
 # set font
 # font pango: source code pro 10
@@ -82,7 +64,6 @@ exec --no-startup-id conky
 exec --no-startup-id conky -c ~/.config/conky/conky-shcts
 exec --no-startup-id copyq
 exec --no-startup-id dunst
-#exec --no-startup-id dex -a -s /etc/xdg/autostart/:~/.config/autostart/
 exec --no-startup-id redshift-gtk
 exec --no-startup-id desktop-items
 exec --no-startup-id nm-applet
@@ -91,7 +72,6 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id xfce4-power-manager
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id setcursor
-#exec_always --no-startup-id ${HOME}/.config/polybar/launch.sh
 exec_always --no-startup-id numlockx on
 exec blueberry-tray
 exec --no-startup-id java -Xmx1024m -jar "/opt/xdman/xdman.jar" -m
@@ -104,7 +84,7 @@ bindsym $super+Shift+d exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'Noto Sans:si
 bindsym $super+space exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Noto Sans 20'
 
 # Lock screen
-# bindsym $super+l exec i3lock -i $lockScreenWallpaper
+bindsym $super+$ctrl+q exec ~/.path/i3/i3exit-user lock
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
@@ -115,12 +95,6 @@ set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.path/i3/i3set-volume +5 && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id ~/.path/i3/i3set-volume -5 && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-#change volume
-#bindsym XF86AudioRaiseVolume exec pulseaudio-ctl up
-#bindsym XF86AudioLowerVolume exec pulseaudio-ctl down
-#bindsym XF86AudioMute exec pulseaudio-ctl mute
-
 
 # music control
 bindsym XF86AudioNext exec playerctl next
@@ -134,9 +108,6 @@ bindsym $super+Print --release exec --no-startup-id i3-scrot -w
 bindsym $super+Shift+Print --release exec --no-startup-id i3-scrot -s
 
 # kill focused window
-# bindsym $super+c kill
-# bindsym $super+q kill
-# bindsym $super+Shift+q kill
 bindsym $super+Shift+q exec ~/.path/i3/i3kill
 
 # change focus
@@ -169,8 +140,6 @@ bindsym $super+Tab workspace back_and_forth
 bindsym $super+Shift+Tab move container to workspace back_and_forth; workspace back_and_forth
 
 # split orientation
-# bindsym $super+h split h;exec notify-send 'tile horizontally'
-# bindsym $super+v split v;exec notify-send 'tile vertically'
 bindsym $super+q split toggle
 
 # toggle fullscreen mode for the focused container
@@ -183,9 +152,6 @@ bindsym $super+e layout toggle split
 
 # toggle tiling / floating
 bindsym $super+Shift+space floating toggle
-
-# change focus between tiling / floating windows
-# bindsym $super+space focus mode_toggle
 
 # toggle sticky
 bindsym $super+Shift+s sticky toggle
@@ -259,9 +225,6 @@ bindsym $super+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $super+Shift+r restart
 
-# exit i3
-#bindsym $super+q exec "i3-nagbar -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
-
 # resize window (you can also use the mouse for that)
 mode "resize" {
         bindsym Left resize shrink width 5 px or 5 ppt
@@ -323,7 +286,6 @@ for_window [class="Pamac-updater"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Qtconfig-qt4"] floating enable border normal
 for_window [class="qt5ct"] floating enable sticky enable border normal
-#for_window [title="sudo"] floating enable border normal
 for_window [class="Simple-scan"] floating enable border normal
 for_window [class="(?i)System-config-printer.py"] floating enable border normal
 for_window [class="Skype"] floating enable border normal
@@ -358,11 +320,6 @@ client.background           #2f343f
 # Set inner/outer gaps
 gaps inner 0
 gaps outer -2
-
-# Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
-# gaps inner|outer current|all set|plus|minus <px>
-# gaps inner all set 10
-# gaps outer all plus 5
 
 # Smart gaps (gaps used if only more than one container on the workspace)
 smart_gaps on
