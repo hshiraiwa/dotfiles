@@ -3,10 +3,7 @@
 # Settings
 declare -a LIST_OF_WINDOW_TITLES_THAT_PREVENT_LOCKING=(
     "YouTube"
-    "Twitch"
     "mpv"
-    "Jellyfin"
-    "Firefox"
 )
 
 # Dependencies
@@ -50,13 +47,5 @@ should_lock() {
 
 # main()
 if should_lock; then
-    case "$1" in
-    lock)
-        ~/.path/i3/i3blurlock
-        ;;
-    suspend)
-        systemctl suspend
-        ;;
-    esac
-
+    systemctl suspend
 fi
